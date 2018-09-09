@@ -1,0 +1,64 @@
+"""This will be a calendar that users can add, delete, view  or update events with"""
+
+from time import sleep, strftime
+calendar = {}
+def welcome():
+  USER_FIRST_NAME = str(raw_input("Enter your name: "))
+  print "Welcome to your Calendar," + USER_FIRST_NAME + "."
+  print "Calendar is initiating... "
+  sleep(1)
+  print "Today is: " + strftime("%A %m %d %Y")
+  print "Current time is: " + strftime("%I:%M:%S")
+  sleep(1)
+  print "Vhart would you like to do?"
+
+def start_calendar():
+  welcome()
+  start = True
+  while start:
+    user_choice = raw_input("Type A to Add, U to Update, V to View, D to Delete, X to Exit: ")
+    user_choice = user_choice.upper()
+    if user_choice == "V":
+      if len(calendar.keys()) < 1: 
+        print "Your calendar is empty!"
+      else:
+        print calendar
+    elif user_choice == "U":
+      date = raw_input("What date? ")
+      update = raw_input("Enter the update: ")
+      calendar[date] = update
+      print "Update for specified date, was successful"
+    elif user_choice == "A":
+      event = raw_input("Enter event: ")
+      date = raw_input("Enter date: (MM/DD/YYY): ")
+      if (len(date) > 10) or int(date[6:]) < int(strftime("%Y")):
+        print "Invalid date was entered!"
+        try_again = raw_input("Would you like to try again? Y for Yes, N for No: ")
+        try_again = try_again.upper()
+        if try_again == "Y":
+          continue
+        else:
+          start = False
+      else: 
+        calendar[date] = event
+        print "Youre event has been scheduled!"
+    elif user_choice == "D":
+      if (len(calendar.keys()) < 1):
+        print "There are no events stored in your calendar"
+      else:
+        event = raw_input("What event? ")
+        for date in calendar.keys():
+          if calendar[date] == event:
+            del calendar[date]
+            print "%s was successfully deleted" % event
+            print calendar
+          else:
+            print "This event doesn't exist"
+    elif user_choice == "X":
+      start = False
+    else:
+      print "Invalid comment entered, exiting calendar"
+      start = False
+      
+start_calendar()
+          
